@@ -51,7 +51,7 @@ find_project_dir() {
 STUDENT_PROJECT_DIR=$(find_project_dir)
 
 if ! [ $STUDENT_PROJECT_DIR == "." ]; then
-    echo "==>${RED}CHANGE DIR AS STUDENTS FILES LiKELY iN SUBDIR${NC}"
+    echo -e "==>${RED}CHANGE DIR AS STUDENTS FILES LiKELY iN SUBDIR${NC}"
     cd $STUDENT_PROJECT_DIR
 fi
 
@@ -60,7 +60,7 @@ width=35
 LAST_COMMIT_AUTHOR=$(git log -1 --pretty=format:'%an')
 LAST_COMMIT_EMAIL=$(git log -1 --pretty=format:'%ae')
 echo "=== === ==="
-echo "GRADING FOR USER ${PURPLE} $LAST_COMMIT_AUTHOR < $LAST_COMMIT_EMAIL > ${NC}"
+echo -e "GRADING FOR USER ${PURPLE} $LAST_COMMIT_AUTHOR < $LAST_COMMIT_EMAIL > ${NC}"
 echo '---'
 printf "%-*s%s\n" "$((width - ${#3}))" CURRENT_DIR: "$(pwd)"
 printf "%-*s%s\n" "$((width - ${#3}))" STUDENT_PROJECT_DIR: "$STUDENT_PROJECT_DIR"
