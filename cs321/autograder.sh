@@ -8,11 +8,10 @@ DEFAULT_RESOURCES_DIR="../../cs321-resources"
 RUBRIC_FILE=*-rubric.txt
 
 # colors for output easier to see
-RED=$(tput setaf 1)
-YELLOW=$(tput setaf 2)
-PURPLE=$(tput setaf 5)
-CYAN=$(tput setaf 6)
-NC=$(tput sgr0)
+NC='\033[0m' # No Color
+RED='\033[0;31m'
+PURPLE='\033[0;35m'
+YELLOW='\033[0;33m'
 
 # ARGUMENTS: PROJECT_NAME, RESOURCES_DIR, FILE_TO_FIND (file most likely where there codebase is, might be Cache.java or something later)
 PROJECT_NAME="${1:-$PROJECT_NAME}"
@@ -51,7 +50,7 @@ find_project_dir() {
 # FIND STUDENT PROJECT DIR IF ITS POSSIBLY IN A SUBDIR
 STUDENT_PROJECT_DIR=$(find_project_dir)
 
-if ! [ $STUDENT_PROJECT_DIR == "." ]]; then
+if ! [ $STUDENT_PROJECT_DIR == "." ]; then
     echo "==>${RED}CHANGE DIR AS STUDENTS FILES LiKELY iN SUBDIR${NC}"
     cd $STUDENT_PROJECT_DIR
 fi
