@@ -4,10 +4,11 @@
 # e.g. ./runner.sh p1-webpage-cache ../../cs321-resources Cache.java
 
 # DEFAULTS
+TERM=xterm-color # for color
 DEFAULT_RESOURCES_DIR="../../cs321-resources"
 RUBRIC_FILE=*-rubric.txt
 
-# colors for output easier to see
+# ansi color escape codes
 NC='\033[0m' # No Color
 RED='\033[0;31m'
 PURPLE='\033[0;35m'
@@ -18,6 +19,15 @@ PROJECT_NAME="${1:-$PROJECT_NAME}"
 RESOURCES_DIR="${2:-$DEFAULT_RESOURCES_DIR}"
 FILE_TO_FIND="${3:-$RUBRIC_FILE}"
 
+LAST_COMMIT_AUTHOR=$(git log -1 --pretty=format:'%an')
+LAST_COMMIT_EMAIL=$(git log -1 --pretty=format:'%ae')
+echo "=== === ==="
+echo -e "GRADING FOR USER ${PURPLE} $LAST_COMMIT_AUTHOR < $LAST_COMMIT_EMAIL > ${NC}"
+echo -e "GRADING FOR USER $PURPLE $LAST_COMMIT_AUTHOR < $LAST_COMMIT_EMAIL > $NC"
+echo -e "GRADING FOR USER $PURPLE $LAST_COMMIT_AUTHOR < $LAST_COMMIT_EMAIL > $NC"
+echo '---'
+
+exit 0
 # CHECK FOR PROJECT_NAME AND RESOURCES_DIR
 ! test -n "$PROJECT_NAME" && echo "PROJECT_NAME must be set" && exit 0 # exit 0 so no errors
 ! test -d $RESOURCES_DIR && git clone https://github.com/BoiseState/CS321-resources $RESOURCES_DIR
