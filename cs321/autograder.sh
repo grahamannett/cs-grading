@@ -62,8 +62,6 @@ fi
 width=35
 echo "=== === ==="
 echo -e "GRADING FOR USER ${PURPLE} $LAST_COMMIT_AUTHOR < $LAST_COMMIT_EMAIL > ${NC}"
-echo -e "GRADING FOR USER $PURPLE $LAST_COMMIT_AUTHOR < $LAST_COMMIT_EMAIL > $NC"
-printf "GRADING FOR USER ${PURPLE} $LAST_COMMIT_AUTHOR < $LAST_COMMIT_EMAIL > ${NC}"
 echo '---'
 printf "%-*s%s\n" "$((width - ${#3}))" CURRENT_DIR: "$(pwd)"
 printf "%-*s%s\n" "$((width - ${#3}))" STUDENT_PROJECT_DIR: "$STUDENT_PROJECT_DIR"
