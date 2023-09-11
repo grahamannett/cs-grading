@@ -1,16 +1,36 @@
 #!/bin/sh
+# usage:
+# ./runner.sh PROJECT_NAME RESOURCES_DIR FILE_TO_FIND
+# e.g. ./runner.sh p1-webpage-cache ../../cs321-resources Cache.java
 
-PROJECT_NAME="${1:-$PROJECT_NAME}"
-BASE_REPO_PATH="../cs321-resources"
+# DEFAULTS
+DEFAULT_RESOURCES_DIR="../../cs321-resources"
 RUBRIC_FILE=*-rubric.txt
 
-# exit 0 so no errors
-! test -n "$PROJECT_NAME" && echo "PROJECT_NAME must be set" && exit 0
+# colors for output easier to see
+RED=$(tput setaf 1)
+YELLOW=$(tput setaf 2)
+PURPLE=$(tput setaf 5)
+CYAN=$(tput setaf 6)
+NC=$(tput sgr0)
+
+# ARGUMENTS: PROJECT_NAME, RESOURCES_DIR, FILE_TO_FIND (file most likely where there codebase is, might be Cache.java or something later)
+PROJECT_NAME="${1:-$PROJECT_NAME}"
+RESOURCES_DIR="${2:-$DEFAULT_RESOURCES_DIR}"
+FILE_TO_FIND="${3:-$RUBRIC_FILE}"
+
+# CHECK FOR PROJECT_NAME AND RESOURCES_DIR
+! test -n "$PROJECT_NAME" && echo "PROJECT_NAME must be set" && exit 0 # exit 0 so no errors
+! test -d $RESOURCES_DIR && git clone https://github.com/BoiseState/CS321-resources $RESOURCES_DIR
+
+# base repo path is where we will look for cs321-resources or clone it to.
+# get absolute path as we may need to cd into subdir for students
+ABSOLUTE_RESOURCES_PATH=$(realpath $RESOURCES_DIR)
 
 check_for() {
     if ! test -e $1; then
-        echo "GETTING $1..."
-        cp -r $BASE_REPO_PATH/projects/$PROJECT_NAME/$1 .
+        echo "-- GETTING $1... to " $(pwd)
+        cp -r $ABSOLUTE_RESOURCES_PATH/projects/$PROJECT_NAME/$1 .
     fi
 }
 
@@ -21,22 +41,36 @@ run_tests() {
     ./run-tests.sh
 }
 
-# setup_project() {
-#     echo "SETUP FOR $PROJECT_NAME"
-#     case $PROJECT_NAME in
-#     p1-*) ;;
-#     p2-*) ;;
-#     p3-*) ;;
-#     *)
-#         echo "NO PROJECT SETUP"
-#         ;;
-#     esac
-# }
-! test -d $BASE_REPO_PATH && git clone https://github.com/BoiseState/CS321-resources $BASE_REPO_PATH
+# check if we are in the right directory in case student created a subdirectory
+find_project_dir() {
+    local found_file=$(find . -name $FILE_TO_FIND -print -quit)
+    local student_project_dir=$(dirname $found_file)
+    echo $student_project_dir
+}
 
+# FIND STUDENT PROJECT DIR IF ITS POSSIBLY IN A SUBDIR
+STUDENT_PROJECT_DIR=$(find_project_dir)
+
+if ! [[ $STUDENT_PROJECT_DIR == "." ]]; then
+    echo "==>${RED}CHANGE DIR AS STUDENTS FILES LiKELY iN SUBDIR${NC}"
+    cd $STUDENT_PROJECT_DIR
+fi
+
+# BEFORE RUNNING PUT INFO HERE
+width=35
+LAST_COMMIT_AUTHOR=$(git log -1 --pretty=format:'%an')
+LAST_COMMIT_EMAIL=$(git log -1 --pretty=format:'%ae')
+echo "=== === ==="
+echo "GRADING FOR USER ${PURPLE} $LAST_COMMIT_AUTHOR < $LAST_COMMIT_EMAIL > ${NC}"
+echo '---'
+printf "%-*s%s\n" "$((width - ${#3}))" CURRENT_DIR: "$(pwd)"
+printf "%-*s%s\n" "$((width - ${#3}))" STUDENT_PROJECT_DIR: "$STUDENT_PROJECT_DIR"
+printf "%-*s%s\n" "$((width - ${#3}))" RESOURCES_PATH: "$ABSOLUTE_RESOURCES_PATH"
+echo "=== === ===\n\n"
+
+# CHECK FOR FILES NEEDED
 check_for test-cases
 check_for run-tests.sh && chmod +x run-tests.sh
 check_for $RUBRIC_FILE
 
-# might need `|| true`
 run_tests
