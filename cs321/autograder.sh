@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # usage:
 # ./runner.sh PROJECT_NAME RESOURCES_DIR FILE_TO_FIND
 # e.g. ./runner.sh p1-webpage-cache ../../cs321-resources Cache.java
@@ -51,7 +51,7 @@ find_project_dir() {
 # FIND STUDENT PROJECT DIR IF ITS POSSIBLY IN A SUBDIR
 STUDENT_PROJECT_DIR=$(find_project_dir)
 
-if ! [[ $STUDENT_PROJECT_DIR == "." ]]; then
+if ! [ $STUDENT_PROJECT_DIR == "." ]]; then
     echo "==>${RED}CHANGE DIR AS STUDENTS FILES LiKELY iN SUBDIR${NC}"
     cd $STUDENT_PROJECT_DIR
 fi
