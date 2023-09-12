@@ -74,5 +74,23 @@ echo "=== === ===\n\n"
 check_for test-cases
 check_for run-tests.sh && chmod +x run-tests.sh
 check_for $RUBRIC_FILE
+check_for fruits.txt
 
 run_tests
+
+# setup_project() {
+#     echo "SETUP FOR $PROJECT_NAME"
+#     case $PROJECT_NAME in
+#     p1-*)
+#         check_for test-cases
+#         check_for run-tests.sh && chmod +x run-tests.sh
+#         check_for $RUBRIC_FILE
+#         check_for fruits.txt
+#         ;;
+#     p2-*) ;;
+#     p3-*) ;;
+#     *)
+#         echo "NO PROJECT SETUP"
+#         ;;
+#     esac
+# }
