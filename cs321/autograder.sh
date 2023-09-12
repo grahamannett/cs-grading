@@ -26,8 +26,10 @@ FILE_TO_FIND="${3:-$RUBRIC_FILE}"
 # base repo path is where we will look for cs321-resources or clone it to.
 # get absolute path as we may need to cd into subdir for students
 ABSOLUTE_RESOURCES_PATH=$(realpath $RESOURCES_DIR)
-LAST_COMMIT_AUTHOR=$(git log -1 --pretty=format:'%an')
-LAST_COMMIT_EMAIL=$(git log -1 --pretty=format:'%ae')
+
+# get 2nd commit author as first is likely the instructor/gh classroom
+AUTHOR=$(git log --format='%an' --reverse | sed -n '2p')
+AUTHOR_EMAIL=$(git log --format='%ae' --reverse | sed -n '2p')
 
 check_for() {
     if ! test -e $1; then
@@ -61,7 +63,7 @@ fi
 # BEFORE RUNNING PUT INFO HERE
 width=35
 echo "=== === ==="
-echo -e "GRADING FOR USER ${PURPLE} $LAST_COMMIT_AUTHOR < $LAST_COMMIT_EMAIL > ${NC}"
+echo -e "GRADING FOR USER ${PURPLE} $AUTHOR < $AUTHOR_EMAIL > ${NC}"
 echo '---'
 printf "%-*s%s\n" "$((width - ${#3}))" CURRENT_DIR: "$(pwd)"
 printf "%-*s%s\n" "$((width - ${#3}))" STUDENT_PROJECT_DIR: "$STUDENT_PROJECT_DIR"
