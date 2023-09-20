@@ -1,7 +1,7 @@
 #!/bin/bash
 # usage:
-# ./runner.sh PROJECT_NAME RESOURCES_DIR FILE_TO_FIND
-# e.g. ./runner.sh p1-webpage-cache ../../cs321-resources Cache.java
+# ./autograder.sh PROJECT_NAME RESOURCES_DIR FILE_TO_FIND
+# e.g. ./autograder.sh p1-webpage-cache ../../cs321-resources Cache.java
 
 # DEFAULTS
 TERM=xterm-color # for color
@@ -52,6 +52,38 @@ find_project_dir() {
     echo $student_project_dir
 }
 
+# IN HERE SETUP/RUN EACH PROJECT
+setup_project() {
+    echo "SETUP FOR $PROJECT_NAME"
+    case $PROJECT_NAME in
+    p1-*)
+        check_for test-cases
+        check_for run-tests.sh && chmod +x run-tests.sh
+        check_for $RUBRIC_FILE
+        check_for fruits.txt
+        run_tests
+        echo -e "==>${RED}CHECK FOR USAGE${NC}"
+        java CacheTest 10
+        ;;
+    p2-*)
+        # ./autograder.sh p2-pq-stardew-valley ../../cs321-resources MyLifeInStardew.java
+        check_for test-cases
+        check-for run-tests.sh && chmod +x run-tests.sh
+        check_for $RUBRIC_FILE
+        check_for MyLifeInStardew.java
+        check_for StardewDailyClock.java
+        check_for HeapException.java
+        run_tests
+        echo -e "==>${RED}CHECK FOR USAGE${NC}"
+        java MyLifeInStardew 1
+        ;;
+    p3-*) ;;
+    *)
+        echo "NO PROJECT SETUP"
+        ;;
+    esac
+}
+
 # FIND STUDENT PROJECT DIR IF ITS POSSIBLY IN A SUBDIR
 STUDENT_PROJECT_DIR=$(find_project_dir)
 
@@ -71,26 +103,4 @@ printf "%-*s%s\n" "$((width - ${#3}))" RESOURCES_PATH: "$ABSOLUTE_RESOURCES_PATH
 echo "=== === ===\n\n"
 
 # CHECK FOR FILES NEEDED
-check_for test-cases
-check_for run-tests.sh && chmod +x run-tests.sh
-check_for $RUBRIC_FILE
-check_for fruits.txt
-
-run_tests
-
-# setup_project() {
-#     echo "SETUP FOR $PROJECT_NAME"
-#     case $PROJECT_NAME in
-#     p1-*)
-#         check_for test-cases
-#         check_for run-tests.sh && chmod +x run-tests.sh
-#         check_for $RUBRIC_FILE
-#         check_for fruits.txt
-#         ;;
-#     p2-*) ;;
-#     p3-*) ;;
-#     *)
-#         echo "NO PROJECT SETUP"
-#         ;;
-#     esac
-# }
+setup_project
