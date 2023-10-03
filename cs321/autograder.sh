@@ -68,7 +68,7 @@ setup_project() {
     p2-*)
         # ./autograder.sh p2-pq-stardew-valley ../../cs321-resources MyLifeInStardew.java
         check_for test-cases
-        check-for run-tests.sh && chmod +x run-tests.sh
+        check_for run-tests.sh && chmod +x run-tests.sh
         check_for $RUBRIC_FILE
         check_for MyLifeInStardew.java
         check_for StardewDailyClock.java
