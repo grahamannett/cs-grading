@@ -40,7 +40,7 @@ check_for() {
 
 run_tests() {
     echo "RUNNING TESTS..."
-    javac *.java
+    javac -cp ../../lib/junit-platform-console-standalone-1.10.0.jar:../../lib/junit-4.13.2.jar *.java
     chmod +x run-tests.sh
     ./run-tests.sh
 }
