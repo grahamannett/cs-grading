@@ -77,7 +77,17 @@ setup_project() {
         echo -e "==>${RED}CHECK FOR USAGE${NC}"
         java MyLifeInStardew 1
         ;;
-    p3-*) ;;
+    p3-*)
+        # ./autograder.sh p3-hashing-experiments ../../cs321-resources HashtableTest.java
+        check_for test-cases
+        check_for word-list.txt
+        chmod +x run-tests.sh
+        check_for $RUBRIC_FILE
+        check_for TwinPrimeGenerator.java
+        run_tests
+        echo -e "==>${RED}CHECK FOR USAGE${NC}"
+        java HashtableTest 1
+        ;;
     *)
         echo "NO PROJECT SETUP"
         ;;
