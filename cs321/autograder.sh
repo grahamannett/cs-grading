@@ -52,6 +52,33 @@ find_project_dir() {
     echo $student_project_dir
 }
 
+git_time_delta() {
+    # Get the date of the last commit
+    LAST_COMMIT_DATE=$(git log -1 --format="%cd" --date=iso-local)
+
+    # Convert the commit date to seconds since epoch
+    # COMMIT_SEC=$(date -jf "%Y-%m-%d %H:%M:%S %z" "$LAST_COMMIT_DATE" +%s)
+    if [[ "$(uname)" == "Darwin" ]]; then
+        COMMIT_SEC=$(date -jf "%Y-%m-%d %H:%M:%S %z" "$LAST_COMMIT_DATE" +%s)
+    else
+        COMMIT_SEC=$(date -d "$LAST_COMMIT_DATE" +%s)
+    fi
+
+    # Get the current date in seconds since epoch
+    NOW_SEC=$(date +%s)
+
+    # Calculate the time delta in seconds
+    DELTA_SEC=$((NOW_SEC - COMMIT_SEC))
+
+    # Convert the delta to days, hours, minutes, and seconds
+    DELTA_DAYS=$((DELTA_SEC / 86400))
+    DELTA_HOURS=$((DELTA_SEC / 3600 % 24))
+    DELTA_MINUTES=$((DELTA_SEC / 60 % 60))
+    DELTA_SECONDS=$((DELTA_SEC % 60))
+
+    echo "It's been $DELTA_DAYS days, $DELTA_HOURS hours, $DELTA_MINUTES minutes, and $DELTA_SECONDS seconds since the last commit."
+}
+
 # IN HERE SETUP/RUN EACH PROJECT
 setup_project() {
     echo "SETUP FOR $PROJECT_NAME"
@@ -114,3 +141,4 @@ echo "=== === ===\n\n"
 
 # CHECK FOR FILES NEEDED
 setup_project
+git_time_delta
