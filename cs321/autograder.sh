@@ -90,7 +90,7 @@ setup_project() {
         check_for fruits.txt
         run_tests
         echo -e "==>${RED}CHECK FOR USAGE${NC}"
-        java CacheTest 10
+        java CacheExperiment 10
         ;;
     p2-*)
         # ./autograder.sh p2-pq-stardew-valley ../../cs321-resources MyLifeInStardew.java
@@ -124,10 +124,11 @@ setup_project() {
 # FIND STUDENT PROJECT DIR IF ITS POSSIBLY IN A SUBDIR
 STUDENT_PROJECT_DIR=$(find_project_dir)
 
-if ! [ $STUDENT_PROJECT_DIR == "." ]; then
-    echo -e "==>${RED}CHANGE DIR AS STUDENTS FILES LiKELY iN SUBDIR${NC}"
-    cd $STUDENT_PROJECT_DIR
-fi
+# Removed--
+# if ! [ $STUDENT_PROJECT_DIR == "." ]; then
+#     echo -e "==>${RED}CHANGE DIR AS STUDENTS FILES LiKELY iN SUBDIR${NC}"
+#     cd $STUDENT_PROJECT_DIR
+# fi
 
 # BEFORE RUNNING PUT INFO HERE
 width=35
@@ -141,4 +142,6 @@ echo "=== === ===\n\n"
 
 # CHECK FOR FILES NEEDED
 setup_project
-git_time_delta
+
+# Removed--
+# git_time_delta
